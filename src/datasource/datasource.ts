@@ -147,17 +147,20 @@ class NewRelicDatasource {
     });
   }
 
-  getApplications() {
+  getApplications(value = 1, extResult = []) {  
     let request = {
-      url: '/v2/applications.json'
+      url: '/v2/applications.json?page='+value
     };
 
     return this.makeApiRequest(request)
-    .then(result => {
-      if (result && result.response && result.response.applications) {
-        return result.response.applications;
+    .then(result => {      
+      if (result && result.response && result.response.applications && result.response.applications.length > 0) {
+        return this.getApplications(value+1, result.response.applications).then(resultInt => {
+            return extResult.concat(resultInt);
+          }
+        )               
       } else {
-        return [];
+        return extResult;
       }
     });
   }

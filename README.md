@@ -24,3 +24,12 @@ This datasource supports aliases and altering the group by interval.
 
 If you leave the value field blank, you will get a separate group for each value of the metric. You can access the value as $value in the alias.
 
+## Build
+npm install
+npm install -g grunt-cli
+grunt
+
+## Test
+mkdir grafana-plugins
+cp -R dist grafana-plugins/new-relic
+docker run -d -p 3000:3000 -v "$(pwd)"/grafana-plugins:/var/lib/grafana/plugins --name=grafana grafana/grafana:7.0.0
